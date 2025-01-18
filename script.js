@@ -1,139 +1,161 @@
 (function() {
-  // Example data fetch if you want to load existing logo from finalWebsiteData.json
-  // For now, let's assume we've already got "found.logo" from your actual data fetch.
-  // We'll just simulate it with a placeholder URL:
-  const foundData = {
-    logo: "https://via.placeholder.com/200x80?text=Current+Logo",
-    name: "CJ Plumbing & Gas"
-  };
-
-  // DOM elements
-  const currentLogoImg = document.getElementById("currentLogo");
-  const logoOptions = document.getElementById("logoOptions");
-  const uploadContainer = document.getElementById("uploadContainer");
-  const dalleContainer = document.getElementById("dalleContainer");
-  const goToStep2Btn = document.getElementById("goToStep2Btn");
-  const step2Hero = document.getElementById("step2Hero");
-
-  const logoUploadInput = document.getElementById("logoUpload");
+  // DOM references
+  const statusMsg        = document.getElementById("statusMsg");
+  const step1Logo        = document.getElementById("step1Logo");
+  const currentLogoImg   = document.getElementById("currentLogo");
+  const logoOptions      = document.getElementById("logoOptions");
+  const uploadContainer  = document.getElementById("uploadContainer");
+  const dalleContainer   = document.getElementById("dalleContainer");
+  const logoUploadInput  = document.getElementById("logoUpload");
   const dallePromptInput = document.getElementById("dallePrompt");
-  const colorInput = document.getElementById("colorInput");
-  const createLogoBtn = document.getElementById("createLogoBtn");
-  const dalleResult = document.getElementById("dalleResult");
-  const dalleImage = document.getElementById("dalleImage");
-  const acceptLogoBtn = document.getElementById("acceptLogoBtn");
-  const tryAgainBtn = document.getElementById("tryAgainBtn");
+  const colorInput       = document.getElementById("colorInput");
+  const createLogoBtn    = document.getElementById("createLogoBtn");
+  const dalleResult      = document.getElementById("dalleResult");
+  const dalleImage       = document.getElementById("dalleImage");
+  const acceptLogoBtn    = document.getElementById("acceptLogoBtn");
+  const tryAgainBtn      = document.getElementById("tryAgainBtn");
+  const goToStep2Btn     = document.getElementById("goToStep2Btn");
 
-  // 1) Initialize the current logo display
-  currentLogoImg.src = foundData.logo;
+  const step2Hero        = document.getElementById("step2Hero");
 
-  // 2) Radio button change event
-  logoOptions.addEventListener("change", function(e) {
-    const choice = e.target.value;
+  // Grab ?site= from the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const siteParam = urlParams.get("site");
 
-    // Hide everything else
-    uploadContainer.classList.add("hidden");
-    dalleContainer.classList.add("hidden");
-    dalleResult.classList.add("hidden");
+  if (!siteParam) {
+    statusMsg.textContent = "Error: No ?site= parameter found in URL.";
+    return;
+  }
 
-    switch (choice) {
-      case "correct":
-        // Immediately allow next step
+  // We'll fetch the real data from your 'alabamaplumbersnowebsite' JSON
+  const DATA_URL = "https://raw.githubusercontent.com/greekfreek23/alabamaplumbersnowebsite/main/finalWebsiteData.json";
+
+  fetch(DATA_URL)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch finalWebsiteData.json: " + response.status);
+      }
+      return response.json();
+    })
+    .then(json => {
+      const businesses = json.finalWebsiteData || [];
+      // Find the matching record
+      const found = businesses.find(biz =>
+        (biz.siteId || "").toLowerCase() === siteParam.toLowerCase()
+      );
+
+      if (!found) {
+        statusMsg.textContent = "No matching siteId found for: " + siteParam;
+        return;
+      }
+
+      // If we get here, we have the business data
+      statusMsg.textContent = `Loaded data for: ${siteParam}`;
+      step1Logo.classList.remove("hidden"); // Show the step 1 container
+
+      // Display the plumber's existing logo
+      if (found.logo) {
+        currentLogoImg.src = found.logo;
+      } else {
+        currentLogoImg.alt = "No logo found in data.";
+      }
+
+      // Now set up the rest of the logic
+
+      // Radio change
+      logoOptions.addEventListener("change", e => {
+        const choice = e.target.value;
+        // Hide sub-containers each time
+        uploadContainer.classList.add("hidden");
+        dalleContainer.classList.add("hidden");
+        dalleResult.classList.add("hidden");
+
+        switch (choice) {
+          case "correct":
+            showNextStepButton(); // Immediately show the Step 2 button
+            break;
+          case "upload":
+            uploadContainer.classList.remove("hidden");
+            break;
+          case "dalle":
+            dalleContainer.classList.remove("hidden");
+            break;
+          case "later":
+            showNextStepButton();
+            break;
+        }
+      });
+
+      // File Upload logic
+      logoUploadInput.addEventListener("change", e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = evt => {
+          currentLogoImg.src = evt.target.result; // local preview
+          console.log("New logo file chosen:", file.name);
+          showNextStepButton();
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // DALL-E creation
+      createLogoBtn.addEventListener("click", () => {
+        const userPrompt = dallePromptInput.value.trim();
+        const colors     = colorInput.value.trim();
+
+        if (!userPrompt) {
+          alert("Please enter a description for your logo.");
+          return;
+        }
+
+        // Fake a DALL-E call
+        simulateDalleGeneration(userPrompt, colors)
+          .then(imgUrl => {
+            dalleImage.src = imgUrl;
+            dalleResult.classList.remove("hidden");
+          });
+      });
+
+      acceptLogoBtn.addEventListener("click", () => {
+        // Set the main logo to the generated DALL-E image
+        currentLogoImg.src = dalleImage.src;
+        console.log("User accepted DALL-E logo");
         showNextStepButton();
-        break;
-      case "upload":
-        // Show file upload container
-        uploadContainer.classList.remove("hidden");
-        break;
-      case "dalle":
-        // Show the DALL-E generation container
-        dalleContainer.classList.remove("hidden");
-        break;
-      case "later":
-        // They want to skip
-        showNextStepButton();
-        break;
-    }
-  });
+      });
 
-  // 3) File Upload logic
-  logoUploadInput.addEventListener("change", function(e) {
-    // Once they pick a file, let's do a quick local preview and then let them proceed
-    const file = e.target.files[0];
-    if (!file) return;
+      tryAgainBtn.addEventListener("click", () => {
+        // Hide result so user can re-enter text
+        dalleResult.classList.add("hidden");
+      });
 
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      // Update the current logo image with the new file
-      currentLogoImg.src = evt.target.result;
-      console.log("User chose a new file:", file.name);
-      // Mark that we've got a new logo
-      // In real code, you'd upload this somewhere or store it in state
-      showNextStepButton();
-    };
-    reader.readAsDataURL(file);
-  });
+      // Next Step -> show Hero placeholder
+      goToStep2Btn.addEventListener("click", () => {
+        step1Logo.classList.add("hidden");
+        goToStep2Btn.classList.add("hidden");
+        step2Hero.classList.remove("hidden");
+        statusMsg.textContent = "Now editing Step 2 (Hero)...";
+      });
 
-  // 4) DALL-E generation logic
-  createLogoBtn.addEventListener("click", function() {
-    const userPrompt = dallePromptInput.value.trim();
-    const colors = colorInput.value.trim();
-
-    if (!userPrompt) {
-      alert("Please enter a description for your logo.");
-      return;
-    }
-    // Here you'd call your serverless function or direct OpenAI API to generate an image
-    // We'll simulate by just picking a random placeholder
-    simulateDalleGeneration(userPrompt, colors).then(imgUrl => {
-      dalleImage.src = imgUrl;
-      dalleResult.classList.remove("hidden");
+    })
+    .catch(err => {
+      statusMsg.textContent = "Error: " + err.message;
+      console.error(err);
     });
-  });
 
-  // Accept the generated logo
-  acceptLogoBtn.addEventListener("click", function() {
-    // We'll set the currentLogo to the dalleImage
-    currentLogoImg.src = dalleImage.src;
-    console.log("User accepted DALL-E logo");
-    showNextStepButton();
-  });
-
-  // Try again - hide the result, let them re-enter prompt
-  tryAgainBtn.addEventListener("click", function() {
-    dalleResult.classList.add("hidden");
-    // Optionally clear fields or just let them edit
-    // dallePromptInput.value = "";
-    // colorInput.value = "";
-  });
-
-  // 5) Next Step button -> Show Step 2
-  goToStep2Btn.addEventListener("click", function() {
-    // Hide step 1 content
-    document.getElementById("instructions").classList.add("hidden");
-    document.getElementById("logoOptions").classList.add("hidden");
-    document.querySelector(".logo-display").classList.add("hidden");
-    uploadContainer.classList.add("hidden");
-    dalleContainer.classList.add("hidden");
-    goToStep2Btn.classList.add("hidden");
-
-    // Show step 2
-    step2Hero.classList.remove("hidden");
-  });
-
-  // Helper to reveal the "Next Step" button
+  // Reveal the "Next Step" button
   function showNextStepButton() {
     goToStep2Btn.classList.remove("hidden");
   }
 
-  // Simulated DALL-E generation
+  // Simulated DALL·E image generation
   async function simulateDalleGeneration(prompt, colors) {
-    console.log("Simulating DALL-E with prompt:", prompt, "colors:", colors);
-    // Wait a bit to simulate API
-    await new Promise(res => setTimeout(res, 1200));
-
-    // Return a random placeholder image URL
-    const randomNum = Math.floor(Math.random() * 1000);
+    console.log("Simulating a DALL-E request with prompt:", prompt, "colors:", colors);
+    // Wait 1 second to mimic API call
+    await new Promise(res => setTimeout(res, 1000));
+    // Return a random placeholder
+    const randomNum = Math.floor(Math.random() * 9999);
     return `https://via.placeholder.com/200x80?text=${encodeURIComponent(prompt)}+${randomNum}`;
   }
 })();
+
