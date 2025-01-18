@@ -3,11 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <title>Plumber Site Builder</title>
+  <!-- Add the Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Link to your CSS file -->
   <link rel="stylesheet" href="styles.css">
+  <!-- Fallback inline styles for critical display elements -->
+  <style>
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <h1>Plumber Site Builder</h1>
-  <p id="statusMsg"></p>
+  <p id="statusMsg" class="status-message"></p>
 
   <!-- STEP 1: LOGO -->
   <div id="step1Logo" class="step-container hidden">
@@ -17,51 +26,71 @@
     </div>
 
     <p>Select how you want to handle your logo:</p>
-    <div id="logoOptions">
-      <label><input type="radio" name="logoChoice" value="correct" />Yes, this is correct</label>
-      <label><input type="radio" name="logoChoice" value="upload" />Upload a new file</label>
-      <label><input type="radio" name="logoChoice" value="dalle" />Create a new logo (AI)</label>
-      <label><input type="radio" name="logoChoice" value="later" />I'll find/update my logo later</label>
+    <div id="logoOptions" class="logo-options">
+      <label class="radio-label">
+        <input type="radio" name="logoChoice" value="correct" />
+        <span>Yes, this is correct</span>
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="logoChoice" value="upload" />
+        <span>Upload a new file</span>
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="logoChoice" value="dalle" />
+        <span>Create a new logo (AI)</span>
+      </label>
+      <label class="radio-label">
+        <input type="radio" name="logoChoice" value="later" />
+        <span>I'll find/update my logo later</span>
+      </label>
     </div>
 
     <!-- Symbol dropdown and color pickers for AI creation -->
-    <div id="dalleLogoContainer" class="hidden">
+    <div id="dalleLogoContainer" class="dalle-container hidden">
       <h3>Generate a New Logo with AI</h3>
-      <label for="symbolDropdown">Select a Symbol:</label>
-      <select id="symbolDropdown">
-        <option value="">--Choose a plumbing symbol--</option>
-        <option value="pipe-wrench">🔧 Pipe Wrench</option>
-        <option value="water-droplet">💧 Water Droplet</option>
-        <option value="faucet">🚰 Faucet</option>
-        <option value="pipe">🛠 Pipe</option>
-        <option value="toolbox">🧰 Toolbox</option>
-        <option value="plumbers-wrench">🔩 Plumber's Wrench</option>
-        <option value="plunger">🪠 Plunger</option>
-        <option value="pipe-fitting">🔗 Pipe Fitting</option>
-        <option value="water-splash">💦 Water Splash</option>
-        <option value="pipe-valve">🚿 Pipe Valve</option>
-      </select>
+      <div class="form-group">
+        <label for="symbolDropdown">Select a Symbol:</label>
+        <select id="symbolDropdown" class="form-select">
+          <option value="">--Choose a plumbing symbol--</option>
+          <option value="pipe-wrench">🔧 Pipe Wrench</option>
+          <option value="water-droplet">💧 Water Droplet</option>
+          <option value="faucet">🚰 Faucet</option>
+          <option value="pipe">🛠 Pipe</option>
+          <option value="toolbox">🧰 Toolbox</option>
+          <option value="plumbers-wrench">🔩 Plumber's Wrench</option>
+          <option value="plunger">🪠 Plunger</option>
+          <option value="pipe-fitting">🔗 Pipe Fitting</option>
+          <option value="water-splash">💦 Water Splash</option>
+          <option value="pipe-valve">🚿 Pipe Valve</option>
+        </select>
+      </div>
 
-      <label for="colorInputPrimary">Primary Color (hex or name):</label>
-      <input type="text" id="colorInputPrimary" placeholder="#0000ff or 'blue'"/>
+      <div class="form-group">
+        <label for="colorInputPrimary">Primary Color (hex or name):</label>
+        <input type="text" id="colorInputPrimary" class="form-input" placeholder="#0000ff or 'blue'"/>
+      </div>
 
-      <label for="colorInputSecondary">Secondary Color (optional):</label>
-      <input type="text" id="colorInputSecondary" placeholder="#ff0000 or 'red'"/>
+      <div class="form-group">
+        <label for="colorInputSecondary">Secondary Color (optional):</label>
+        <input type="text" id="colorInputSecondary" class="form-input" placeholder="#ff0000 or 'red'"/>
+      </div>
 
       <button id="createLogoAI" class="ai-button">Generate Logo</button>
 
-      <div id="logoAIResults" class="hidden">
+      <div id="logoAIResults" class="ai-results hidden">
         <h4>AI Generated Logos</h4>
-        <div id="logoAIImages"></div>
-        <button id="noneWorkBtn" class="ai-button">None of These Work</button>
-        <button id="tryLogoAgainBtn" class="ai-button">Try Again</button>
+        <div id="logoAIImages" class="logo-grid"></div>
+        <div class="button-group">
+          <button id="noneWorkBtn" class="ai-button">None of These Work</button>
+          <button id="tryLogoAgainBtn" class="ai-button">Try Again</button>
+        </div>
       </div>
     </div>
 
     <!-- Upload container -->
-    <div id="uploadContainer" class="hidden">
+    <div id="uploadContainer" class="upload-container hidden">
       <h3>Upload Your New Logo</h3>
-      <input type="file" id="logoUpload" accept="image/*" />
+      <input type="file" id="logoUpload" class="file-input" accept="image/*" />
     </div>
 
     <button id="goToStep2Btn" class="nav-button hidden">Go to Step 2: Hero Builder</button>
@@ -71,7 +100,7 @@
   <div id="step2Hero" class="step-container hidden">
     <h2>Step 2: Hero Builder</h2>
     <p>You can swap the hero image, write your own call-to-action text, or let AI generate new text.</p>
-    <div id="heroImagesList"></div>
+    <div id="heroImagesList" class="hero-grid"></div>
     <button id="heroLooksGoodBtn" class="nav-button">Looks Good! Go to Step 3</button>
   </div>
 
@@ -84,8 +113,6 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
 
 
 
