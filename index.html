@@ -3,14 +3,194 @@
 <head>
   <meta charset="UTF-8" />
   <title>Plumber Site Builder</title>
-  <!-- Add the Inter font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Link to your CSS file -->
-  <link rel="stylesheet" href="styles.css">
-  <!-- Fallback inline styles for critical display elements -->
+  
   <style>
+    :root {
+      /* These will be overwritten by JavaScript with colors from JSON */
+      --primary-color: #2b6cb0;
+      --secondary-color: #38a169;
+      --text-color: #1a1a1a;
+      --background: #f5f7f9;
+      --border-light: #e2e8f0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--text-color);
+      background: var(--background);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
     .hidden {
       display: none !important;
+    }
+
+    .step-container {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid var(--border-light);
+      max-width: 900px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: var(--primary-color);
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--text-color);
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 2rem;
+    }
+
+    .form-input,
+    textarea.form-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--border-light);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+      background: white;
+      margin-bottom: 1rem;
+    }
+
+    textarea.form-input {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .nav-button,
+    .ai-button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      color: white;
+    }
+
+    .nav-button {
+      background: var(--primary-color);
+    }
+
+    .nav-button:hover {
+      filter: brightness(90%);
+      transform: translateY(-1px);
+    }
+
+    .ai-button {
+      background: var(--secondary-color);
+    }
+
+    .ai-button:hover {
+      filter: brightness(90%);
+      transform: translateY(-1px);
+    }
+
+    .preview-box {
+      background: var(--background);
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      min-height: 100px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .hero-item {
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-item img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .preview-container {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-top: 2rem;
+      border: 2px solid var(--border-light);
+    }
+
+    .status-message {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      background: var(--background);
+      border: 1px solid var(--border-light);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .step-container {
+        padding: 1rem;
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .button-group button {
+        width: 100%;
+      }
+
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -18,100 +198,81 @@
   <h1>Plumber Site Builder</h1>
   <p id="statusMsg" class="status-message"></p>
 
-  <!-- STEP 1: LOGO -->
-  <div id="step1Logo" class="step-container hidden">
-    <h2>Part 1 of 5: Logo</h2>
-    <div class="logo-display">
-      <img id="currentLogo" src="" alt="Current Logo">
-    </div>
-
-    <p>Select how you want to handle your logo:</p>
-    <div id="logoOptions" class="logo-options">
-      <label class="radio-label">
-        <input type="radio" name="logoChoice" value="correct" />
-        <span>Yes, this is correct</span>
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="logoChoice" value="upload" />
-        <span>Upload a new file</span>
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="logoChoice" value="dalle" />
-        <span>Create a new logo (AI)</span>
-      </label>
-      <label class="radio-label">
-        <input type="radio" name="logoChoice" value="later" />
-        <span>I'll find/update my logo later</span>
-      </label>
-    </div>
-
-    <!-- Symbol dropdown and color pickers for AI creation -->
-    <div id="dalleLogoContainer" class="dalle-container hidden">
-      <h3>Generate a New Logo with AI</h3>
-      <div class="form-group">
-        <label for="symbolDropdown">Select a Symbol:</label>
-        <select id="symbolDropdown" class="form-select">
-          <option value="">--Choose a plumbing symbol--</option>
-          <option value="pipe-wrench">🔧 Pipe Wrench</option>
-          <option value="water-droplet">💧 Water Droplet</option>
-          <option value="faucet">🚰 Faucet</option>
-          <option value="pipe">🛠 Pipe</option>
-          <option value="toolbox">🧰 Toolbox</option>
-          <option value="plumbers-wrench">🔩 Plumber's Wrench</option>
-          <option value="plunger">🪠 Plunger</option>
-          <option value="pipe-fitting">🔗 Pipe Fitting</option>
-          <option value="water-splash">💦 Water Splash</option>
-          <option value="pipe-valve">🚿 Pipe Valve</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="colorInputPrimary">Primary Color (hex or name):</label>
-        <input type="text" id="colorInputPrimary" class="form-input" placeholder="#0000ff or 'blue'"/>
-      </div>
-
-      <div class="form-group">
-        <label for="colorInputSecondary">Secondary Color (optional):</label>
-        <input type="text" id="colorInputSecondary" class="form-input" placeholder="#ff0000 or 'red'"/>
-      </div>
-
-      <button id="createLogoAI" class="ai-button">Generate Logo</button>
-
-      <div id="logoAIResults" class="ai-results hidden">
-        <h4>AI Generated Logos</h4>
-        <div id="logoAIImages" class="logo-grid"></div>
-        <div class="button-group">
-          <button id="noneWorkBtn" class="ai-button">None of These Work</button>
-          <button id="tryLogoAgainBtn" class="ai-button">Try Again</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Upload container -->
-    <div id="uploadContainer" class="upload-container hidden">
-      <h3>Upload Your New Logo</h3>
-      <input type="file" id="logoUpload" class="file-input" accept="image/*" />
-    </div>
-
-    <button id="goToStep2Btn" class="nav-button hidden">Go to Step 2: Hero Builder</button>
-  </div>
-
-  <!-- STEP 2: HERO BUILDER -->
-  <div id="step2Hero" class="step-container hidden">
-    <h2>Step 2: Hero Builder</h2>
+  <!-- STEP 1: HERO BUILDER -->
+  <div id="step1Hero" class="step-container hidden">
+    <h2>Step 1: Hero Builder</h2>
     <p>You can swap the hero image, write your own call-to-action text, or let AI generate new text.</p>
     <div id="heroImagesList" class="hero-grid"></div>
-    <button id="heroLooksGoodBtn" class="nav-button">Looks Good! Go to Step 3</button>
+    <button id="heroLooksGoodBtn" class="nav-button">Looks Good! Go to Step 2</button>
   </div>
 
-  <!-- STEP 3: ABOUT US -->
-  <div id="step3About" class="step-container hidden">
-    <h2>Step 3: About Us</h2>
-    <p>(Placeholder) Here you'd let them edit their "About Us" text and images.</p>
+  <!-- STEP 2: ABOUT US -->
+  <div id="step2About" class="step-container hidden">
+    <h2>Step 2: About Your Business</h2>
+    
+    <div class="form-group">
+      <h3>Tell customers about your business</h3>
+      <textarea 
+        id="aboutUsText" 
+        class="form-input" 
+        placeholder="Share your company's story, experience, and what makes you unique..."
+      ></textarea>
+      <button id="generateAboutAI" class="ai-button">Generate with AI</button>
+    </div>
+
+    <div class="form-group">
+      <h3>Preview</h3>
+      <div id="aboutUsPreview" class="preview-box"></div>
+    </div>
+
+    <div class="button-group">
+      <button id="backToHeroBtn" class="nav-button">Back to Hero Section</button>
+      <button id="goToStep3Btn" class="nav-button">Continue to Why Choose Us</button>
+    </div>
+
+    <button id="previewSiteBtn" class="nav-button">Preview Full Site</button>
+    
+    <div id="fullSitePreview" class="preview-container hidden">
+      <div id="previewHero"></div>
+      <div id="previewAbout"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3: WHY CHOOSE US -->
+  <div id="step3WhyUs" class="step-container hidden">
+    <h2>Step 3: Why Choose Us</h2>
+    
+    <div class="form-group">
+      <h3>Main Pitch</h3>
+      <textarea 
+        id="mainPitchText" 
+        class="form-input" 
+        placeholder="Your main value proposition..."
+      ></textarea>
+      <button id="generatePitchAI" class="ai-button">Generate with AI</button>
+    </div>
+
+    <div class="form-group">
+      <h3>Key Selling Points</h3>
+      <div id="sellingPointsList"></div>
+      <button id="addSellingPoint" class="nav-button">+ Add Selling Point</button>
+      <button id="generatePointsAI" class="ai-button">Generate Points with AI</button>
+    </div>
+
+    <div class="form-group">
+      <h3>Preview</h3>
+      <div id="whyUsPreview" class="preview-box"></div>
+    </div>
+
+    <div class="button-group">
+      <button id="backToAboutBtn" class="nav-button">Back to About</button>
+      <button id="goToStep4Btn" class="nav-button">Continue to Services</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+</html>
 </html>
 
 
