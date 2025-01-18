@@ -285,55 +285,27 @@
     });
   }
 
- // ============ AI Helpers ============
+// Original working code up to line 357...
 
-  // DALL-E generation
-  async function generateDalleLogos(symbol, primaryColor, secondaryColor, n=3, additionalFeedback="") {
-    try {
-      const responses = [];
-      // Make multiple calls since our endpoint returns one image at a time
-      for(let i = 0; i < n; i++) {
-        const response = await fetch("/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            requestType: "logo",
-            symbol,
-            primaryColor,
-            secondaryColor,
-            additionalFeedback
-          })
-        });
+// ============ AI Helpers ============
 
-        if(!response.ok) {
-          const err = await response.json();
-          throw new Error(err.error || "API error");
-        }
-
-        const data = await response.json();
-        responses.push(data.imageUrl);
-      }
-      return responses;
-    } catch (error) {
-      console.error("Error generating logos:", error);
-      throw error;
-    }
-  }
-
-  // ChatGPT text completions
-  async function generateChatGPTCTA(userFeedback) {
-    try {
+// DALL-E generation
+async function generateDalleLogos(symbol, primaryColor, secondaryColor, n=3, additionalFeedback="") {
+  try {
+    const responses = [];
+    // Make multiple calls since our endpoint returns one image at a time
+    for(let i = 0; i < n; i++) {
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          requestType: "heroText",
-          businessName: siteParam,
-          feedback: userFeedback
+          requestType: "logo",
+          symbol,
+          primaryColor,
+          secondaryColor,
+          additionalFeedback
         })
       });
 
@@ -343,14 +315,46 @@
       }
 
       const data = await response.json();
-      // Split the response into lines
-      const lines = data.text.split(/\n+/).map(l => 
-        l.replace(/^\d+\.\s*/, "").trim()
-      ).filter(Boolean);
-      
-      return lines.slice(0,3);
-    } catch (error) {
-      console.error("Error generating CTA:", error);
-      throw error;
+      responses.push(data.imageUrl);
     }
+    return responses;
+  } catch (error) {
+    console.error("Error generating logos:", error);
+    throw error;
   }
+}
+
+// ChatGPT text completions
+async function generateChatGPTCTA(userFeedback) {
+  try {
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        requestType: "heroText",
+        businessName: siteParam,
+        feedback: userFeedback
+      })
+    });
+
+    if(!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || "API error");
+    }
+
+    const data = await response.json();
+    // Split the response into lines
+    const lines = data.text.split(/\n+/).map(l => 
+      l.replace(/^\d+\.\s*/, "").trim()
+    ).filter(Boolean);
+    
+    return lines.slice(0,3);
+  } catch (error) {
+    console.error("Error generating CTA:", error);
+    throw error;
+  }
+}
+
+})();
