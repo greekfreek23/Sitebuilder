@@ -272,7 +272,7 @@ const OPENAI_API_KEY = "sk-proj--PQRaaeihV4_GMmRtiQcGzs1ngRPu_CvBl0N1Sd-soAJj1-m
         "Authorization": `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4.0-turbo",
         messages: [
           { role: "system", content: "You are a helpful marketing copywriter." },
           { role: "user", content: userPrompt }
