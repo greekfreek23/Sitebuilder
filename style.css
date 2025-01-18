@@ -1,131 +1,250 @@
-/* Basic resets & fonts */
+/* ======================================
+   GLOBAL STYLES & RESET
+====================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --font-family: 'Arial', sans-serif;
+  --color-primary: #007BFF;
+  --color-secondary: #0056b3;
+  --color-accent: #28a745;
+  --color-accent-hover: #218838;
+  --color-warning: #ff9800;
+  --color-danger: #dc3545;
+  --color-light: #f8f9fa;
+  --color-dark: #343a40;
+
+  --step-bg: #ffffff;
+  --step-border: #ccc;
+  --step-radius: 6px;
+  
+  --btn-radius: 4px;
+  --btn-padding: 8px 14px;
+}
+
+/* Body & Typography */
 body {
+  font-family: var(--font-family);
+  background-color: var(--color-light);
+  color: var(--color-dark);
   margin: 20px;
-  font-family: Arial, sans-serif;
+  line-height: 1.4;
 }
 
-/* Utility to hide sections */
+h1 {
+  margin-bottom: 15px;
+}
+
+h2 {
+  margin-bottom: 10px;
+  color: var(--color-dark);
+}
+
+p {
+  margin-bottom: 15px;
+}
+
+/* Utility */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-/* Status / Title styling */
-#pageTitle {
-  margin-bottom: 0;
-}
-#statusMsg {
-  margin: 5px 0 15px;
-  font-weight: bold;
-}
-
-/* Step containers */
-#step1Logo,
-#step2Hero,
-#step3About {
-  margin: 20px 0;
+/* ======================================
+   STEP CONTAINERS
+====================================== */
+.step-container {
+  background-color: var(--step-bg);
+  border: 1px solid var(--step-border);
+  border-radius: var(--step-radius);
   padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #fafafa;
+  margin: 20px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Logo display */
-.logo-display img {
-  max-width: 200px;
-  border: 1px solid #ccc;
-  background: #fff;
-  padding: 5px;
-  margin-bottom: 10px;
+#statusMsg {
+  font-weight: bold;
+  color: var(--color-dark);
+  margin-bottom: 15px;
 }
 
-/* Upload / DALL·E container */
-#uploadContainer,
-#dalleContainer {
-  margin: 15px 0;
-  padding: 10px;
-  background: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+/* ======================================
+   LOGO SECTION
+====================================== */
+.logo-display {
+  margin-bottom: 15px;
+  text-align: center;
 }
-#dalleContainer textarea {
-  width: 100%;
-  padding: 6px;
-  margin-bottom: 10px;
-}
-#colorInput {
-  display: block;
-  margin-bottom: 10px;
-  width: 200px;
-  padding: 6px;
-}
-#dalleResult img {
+
+#currentLogo {
   max-width: 200px;
   border: 1px solid #ccc;
+  background-color: #fff;
   padding: 5px;
-  background: #fff;
-  display: block;
+  border-radius: 4px;
+}
+
+#logoOptions {
   margin-top: 10px;
 }
 
-/* Buttons */
-button {
-  padding: 10px 16px;
-  font-size: 1em;
-  border: none;
+/* DALLE (AI) Logo Container */
+#dalleLogoContainer {
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  padding: 10px;
   border-radius: 4px;
-  cursor: pointer;
-  margin-right: 6px;
-}
-button:hover {
-  opacity: 0.9;
-}
-#createLogoBtn,
-#acceptLogoBtn,
-#tryAgainBtn {
-  background: #28a745;
-  color: #fff;
-}
-#goToStep2Btn,
-#heroLooksGoodBtn {
-  background: #007BFF;
-  color: #fff;
-}
-#goToStep2Btn:hover,
-#heroLooksGoodBtn:hover {
-  background: #0056b3;
+  background-color: #fdfdfd;
 }
 
-/* Hero images list (Step 2) */
+/* AI Results */
+#logoAIResults {
+  margin-top: 10px;
+}
+
+#logoAIImages {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+#logoAIImages img {
+  max-width: 100px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: transform 0.2s ease;
+}
+#logoAIImages img:hover {
+  transform: scale(1.05);
+}
+
+/* Upload Container */
+#uploadContainer {
+  margin: 10px 0;
+}
+
+/* ======================================
+   HERO SECTION
+====================================== */
 #heroImagesList {
   margin: 15px 0;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  justify-content: flex-start;
 }
+
 .hero-item {
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
   background: #f9f9f9;
   max-width: 300px;
+  position: relative;
 }
+
 .hero-item img {
   max-width: 100%;
   display: block;
   margin-bottom: 8px;
 }
+
 .hero-item label {
-  font-weight: bold;
   display: block;
-  margin-top: 5px;
+  font-weight: bold;
+  margin-bottom: 6px;
 }
-.hero-item input {
+
+.hero-item input[type="text"] {
   width: 100%;
   margin-bottom: 8px;
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+
+/* Save button for CTA inside hero items */
+.save-cta-btn {
+  background-color: var(--color-warning);
+  color: #fff;
+  margin-top: 5px;
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  padding: var(--btn-padding);
+  display: none; /* it says it's hidden by default in the original code */
+}
+.save-cta-btn:hover {
+  background-color: #fb8c00;
+}
+
+/* ======================================
+   BUTTONS
+====================================== */
+button,
+.btn {
+  display: inline-block;
+  padding: var(--btn-padding);
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--btn-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-right: 6px;
+}
+
+/* Primary nav button (e.g., next step) */
+.nav-button {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.nav-button:hover {
+  background-color: var(--color-secondary);
+}
+
+/* AI button (green) */
+.ai-button {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+.ai-button:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* ======================================
+   FORMS & INPUTS
+====================================== */
+label {
+  margin-bottom: 3px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+input[type="text"],
+select,
+input[type="file"] {
+  display: block;
+  margin-bottom: 10px;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font: inherit;
+  width: 100%;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
 
 
 
