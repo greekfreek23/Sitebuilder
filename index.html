@@ -477,12 +477,119 @@ textarea.form-input {
       <button id="backToAboutBtn" class="nav-button">Back to About</button>
       <button id="goToStep4Btn" class="nav-button">Continue to Services</button>
     </div>
+  <!-- Add these sections to your index.html -->
+
+<!-- STEP 3: WHY CHOOSE US -->
+<div id="step3WhyUs" class="step-container hidden">
+  <h2>Step 3: Why Choose Us</h2>
+  
+  <!-- Main Pitch Editor -->
+  <div class="form-group">
+    <h3>Main Pitch</h3>
+    <textarea 
+      id="mainPitchText" 
+      class="form-input" 
+      placeholder="Your main value proposition..."
+    ></textarea>
+    <button id="generatePitchAI" class="ai-button">Generate with AI</button>
   </div>
+
+  <!-- Selling Points -->
+  <div class="form-group">
+    <h3>Key Selling Points</h3>
+    <div id="sellingPointsList">
+      <!-- Points will be added here -->
+    </div>
+    <button id="addSellingPoint" class="nav-button">+ Add Selling Point</button>
+    <button id="generatePointsAI" class="ai-button">Generate Points with AI</button>
+  </div>
+
+  <div class="button-group">
+    <button id="backToAboutBtn" class="nav-button">Back to About</button>
+    <button id="goToServicesBtn" class="nav-button">Continue to Services</button>
+  </div>
+</div>
+
+<!-- STEP 4: SERVICES -->
+<div id="step4Services" class="step-container hidden">
+  <h2>Step 4: Your Services</h2>
+  
+  <div class="services-instructions">
+    <p>Select the services you offer and arrange them in order of importance. The order here is how they'll appear on your website.</p>
+  </div>
+
+  <div class="form-group">
+    <h3>Select Your Services</h3>
+    <div class="services-selector">
+      <div class="available-services">
+        <h4>Available Services</h4>
+        <div id="availableServicesList" class="services-list">
+          <!-- Services will be populated here -->
+        </div>
+      </div>
+      
+      <div class="selected-services">
+        <h4>Your Services (Drag to Reorder)</h4>
+        <div id="selectedServicesList" class="services-list sortable">
+          <!-- Selected services will appear here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button id="backToWhyUsBtn" class="nav-button">Back to Why Choose Us</button>
+    <button id="goToServiceAreaBtn" class="nav-button">Continue to Service Area</button>
+  </div>
+</div>
+
+<!-- STEP 5: SERVICE AREA -->
+<div id="step5Area" class="step-container hidden">
+  <h2>Step 5: Service Area</h2>
+  
+  <div class="form-group">
+    <h3>Counties You Serve</h3>
+    <p>Enter the counties where you provide service, one per line:</p>
+    <textarea 
+      id="serviceCounties" 
+      class="form-input" 
+      placeholder="e.g. Jefferson County&#13;&#10;Shelby County&#13;&#10;Walker County"
+    ></textarea>
+  </div>
+
+  <div class="form-group">
+    <h3>Service Radius</h3>
+    <input 
+      type="number" 
+      id="serviceRadius" 
+      class="form-input" 
+      placeholder="Miles from your location"
+    >
+  </div>
+
+  <div class="button-group">
+    <button id="backToServicesBtn" class="nav-button">Back to Services</button>
+    <button id="finishBuildBtn" class="nav-button">Complete Site Build</button>
+  </div>
+</div>
+
+<!-- Final Preview Modal -->
+<div id="finalPreviewModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>Your Website Preview</h2>
+    <div id="fullSitePreview" class="preview-container">
+      <!-- Full site preview will be rendered here -->
+    </div>
+    <div class="button-group">
+      <button id="makeChangesBtn" class="nav-button">Make Changes</button>
+      <button id="confirmSiteBtn" class="ai-button">Looks Good! Create My Site</button>
+    </div>
+  </div>
+</div>
 
   <script src="script.js"></script>
 </body>
-</html>
-</html>
+
 
 
 
