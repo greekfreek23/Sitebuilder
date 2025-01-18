@@ -1,7 +1,7 @@
 /***************************************************************
  * REPLACE THE PLACEHOLDER API KEY BELOW WITH YOUR REAL KEY 
  ***************************************************************/
-const OPENAI_API_KEY = ""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";
+const OPENAI_API_KEY = "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";
 
 (function(){
   // DOM references
