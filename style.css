@@ -1,144 +1,45 @@
-/* ======================================
-   GLOBAL STYLES & RESET
-====================================== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --font-family: 'Arial', sans-serif;
-  --color-primary: #007BFF;
-  --color-secondary: #0056b3;
-  --color-accent: #28a745;
-  --color-accent-hover: #218838;
-  --color-warning: #ff9800;
-  --color-danger: #dc3545;
-  --color-light: #f8f9fa;
-  --color-dark: #343a40;
-
-  --step-bg: #ffffff;
-  --step-border: #ccc;
-  --step-radius: 6px;
-  
-  --btn-radius: 4px;
-  --btn-padding: 8px 14px;
-}
-
-/* Body & Typography */
 body {
-  font-family: var(--font-family);
-  background-color: var(--color-light);
-  color: var(--color-dark);
   margin: 20px;
-  line-height: 1.4;
+  font-family: Arial, sans-serif;
 }
 
-h1 {
-  margin-bottom: 15px;
-}
-
-h2 {
-  margin-bottom: 10px;
-  color: var(--color-dark);
-}
-
-p {
-  margin-bottom: 15px;
-}
-
-/* Utility */
 .hidden {
-  display: none !important;
+  display: none;
 }
 
-/* ======================================
-   STEP CONTAINERS
-====================================== */
+/* Step containers */
 .step-container {
-  background-color: var(--step-bg);
-  border: 1px solid var(--step-border);
-  border-radius: var(--step-radius);
-  padding: 15px;
   margin: 20px 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fafafa;
 }
 
 #statusMsg {
   font-weight: bold;
-  color: var(--color-dark);
   margin-bottom: 15px;
 }
 
-/* ======================================
-   LOGO SECTION
-====================================== */
-.logo-display {
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-#currentLogo {
-  max-width: 200px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  padding: 5px;
-  border-radius: 4px;
-}
-
+/* Logo step */
 #logoOptions {
   margin-top: 10px;
 }
 
-/* DALLE (AI) Logo Container */
-#dalleLogoContainer {
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
-  background-color: #fdfdfd;
+#logoUpload,
+#colorInputPrimary,
+#colorInputSecondary,
+#symbolDropdown {
+  margin-bottom: 10px;
+  display: block;
 }
 
-/* AI Results */
-#logoAIResults {
-  margin-top: 10px;
-}
-
-#logoAIImages {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 5px;
-}
-
-#logoAIImages img {
-  max-width: 100px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: transform 0.2s ease;
-}
-#logoAIImages img:hover {
-  transform: scale(1.05);
-}
-
-/* Upload Container */
-#uploadContainer {
-  margin: 10px 0;
-}
-
-/* ======================================
-   HERO SECTION
-====================================== */
+/* Hero step */
 #heroImagesList {
   margin: 15px 0;
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: flex-start;
 }
 
 .hero-item {
@@ -157,9 +58,9 @@ p {
 }
 
 .hero-item label {
-  display: block;
   font-weight: bold;
-  margin-bottom: 6px;
+  display: block;
+  margin-top: 5px;
 }
 
 .hero-item input[type="text"] {
@@ -170,81 +71,51 @@ p {
   border: 1px solid #ccc;
 }
 
-/* Save button for CTA inside hero items */
+/* Save button for CTA */
 .save-cta-btn {
-  background-color: var(--color-warning);
+  background: #ff9800;
   color: #fff;
   margin-top: 5px;
   border: none;
-  border-radius: var(--btn-radius);
+  border-radius: 4px;
   cursor: pointer;
-  padding: var(--btn-padding);
-  display: none; /* it says it's hidden by default in the original code */
-}
-.save-cta-btn:hover {
-  background-color: #fb8c00;
+  padding: 8px 14px;
+  display: none;
 }
 
-/* ======================================
-   BUTTONS
-====================================== */
-button,
-.btn {
-  display: inline-block;
-  padding: var(--btn-padding);
-  font-size: 1rem;
+button {
+  padding: 10px 16px;
+  font-size: 1em;
   border: none;
-  border-radius: var(--btn-radius);
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
   margin-right: 6px;
 }
 
-/* Primary nav button (e.g., next step) */
-.nav-button {
-  background-color: var(--color-primary);
-  color: #fff;
-}
-
-.nav-button:hover {
-  background-color: var(--color-secondary);
-}
-
-/* AI button (green) */
 .ai-button {
-  background-color: var(--color-accent);
+  background: #28a745;
   color: #fff;
 }
 
 .ai-button:hover {
-  background-color: var(--color-accent-hover);
+  background: #218838;
 }
 
-/* ======================================
-   FORMS & INPUTS
-====================================== */
-label {
-  margin-bottom: 3px;
-  display: inline-block;
-  font-weight: 600;
+.nav-button {
+  background: #007BFF;
+  color: #fff;
 }
 
-input[type="text"],
-select,
-input[type="file"] {
-  display: block;
-  margin-bottom: 10px;
-  padding: 6px;
-  border-radius: 4px;
+.nav-button:hover {
+  background: #0056b3;
+}
+
+/* Logo AI results area */
+#logoAIResults img {
+  max-width: 100px;
   border: 1px solid #ccc;
-  font: inherit;
-  width: 100%;
-}
-
-input[type="radio"] {
   margin-right: 5px;
 }
-
 
 
 
