@@ -1,27 +1,35 @@
+/* Basic resets & fonts */
 body {
   margin: 20px;
   font-family: Arial, sans-serif;
 }
 
+/* Utility to hide sections */
 .hidden {
   display: none;
 }
 
-/* A simple status message at the top */
+/* Status / Title styling */
+#pageTitle {
+  margin-bottom: 0;
+}
 #statusMsg {
-  margin-bottom: 15px;
+  margin: 5px 0 15px;
   font-weight: bold;
 }
 
-/* Step 1 container */
-#step1Logo {
+/* Step containers */
+#step1Logo,
+#step2Hero,
+#step3About {
   margin: 20px 0;
-  padding: 10px;
+  padding: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background: #fafafa;
 }
 
-/* Logo display area */
+/* Logo display */
 .logo-display img {
   max-width: 200px;
   border: 1px solid #ccc;
@@ -30,7 +38,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* Upload / DALL-E container styling */
+/* Upload / DALL·E container */
 #uploadContainer,
 #dalleContainer {
   margin: 15px 0;
@@ -39,20 +47,17 @@ body {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
 #dalleContainer textarea {
   width: 100%;
   padding: 6px;
   margin-bottom: 10px;
 }
-
 #colorInput {
   display: block;
   margin-bottom: 10px;
   width: 200px;
   padding: 6px;
 }
-
 #dalleResult img {
   max-width: 200px;
   border: 1px solid #ccc;
@@ -69,38 +74,58 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-right: 5px;
+  margin-right: 6px;
 }
-
+button:hover {
+  opacity: 0.9;
+}
 #createLogoBtn,
 #acceptLogoBtn,
 #tryAgainBtn {
   background: #28a745;
   color: #fff;
 }
-
-#createLogoBtn:hover,
-#acceptLogoBtn:hover,
-#tryAgainBtn:hover {
-  background: #218838;
-}
-
-#goToStep2Btn {
-  margin-top: 20px;
+#goToStep2Btn,
+#heroLooksGoodBtn {
   background: #007BFF;
   color: #fff;
 }
-
-#goToStep2Btn:hover {
+#goToStep2Btn:hover,
+#heroLooksGoodBtn:hover {
   background: #0056b3;
 }
 
-/* Step 2 placeholder styling */
-#step2Hero {
-  border: 1px solid #ccc;
-  padding: 15px;
-  border-radius: 6px;
-  background: #fafafa;
+/* Hero images list (Step 2) */
+#heroImagesList {
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
+.hero-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background: #f9f9f9;
+  max-width: 300px;
+}
+.hero-item img {
+  max-width: 100%;
+  display: block;
+  margin-bottom: 8px;
+}
+.hero-item label {
+  font-weight: bold;
+  display: block;
+  margin-top: 5px;
+}
+.hero-item input {
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
 
 
