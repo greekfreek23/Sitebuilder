@@ -2,45 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Plumber Site Builder</title>
+  <title>Plumber Site Builder - Step 1: Logo</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <h1>Part 1 of 5: Logo</h1>
+  <p id="instructions">
+    We found the following logo in our records. Is this correct?
+  </p>
 
-  <!-- Title / Welcome -->
-  <h1>Welcome to Your Personalized Plumber Site</h1>
-  <p id="siteStatus"></p>
-
-  <!-- Original Site Preview Section -->
-  <div id="originalSiteContainer">
-    <p>Below is your current live site. If everything looks good, click the button to start editing.</p>
-    <iframe id="originalSiteIframe" src="" frameborder="0"></iframe>
-    
-    <button id="openBuilderBtn" class="big-button">
-      Open Website Builder
-    </button>
+  <!-- Display the current logo -->
+  <div class="logo-display">
+    <img id="currentLogo" src="" alt="Current Logo" />
   </div>
 
-  <!-- Builder Section (Initially Hidden) -->
-  <div id="builderContainer" class="hidden">
-    <h2>Part 1 of 5: Logo</h2>
-    <p id="logoInstructions">
-      We found the following logo in our records. Is this correct?
-    </p>
-    <div class="logo-display">
-      <img id="currentLogo" src="" alt="Current Logo" />
-    </div>
-    <div class="options">
-      <p>If this logo is incorrect or outdated, you can:</p>
-      
-      <!-- Option A: Upload a new file -->
-      <label for="logoUpload">Upload a new logo file:</label>
-      <input type="file" id="logoUpload" accept="image/*" />
-      <br/><br/>
+  <!-- Radio button options -->
+  <div id="logoOptions">
+    <label>
+      <input type="radio" name="logoChoice" value="correct" />
+      Yes, this is correct
+    </label><br />
 
-      <!-- Option B: Generate a new logo with DALL-E -->
-      <button id="generateLogoBtn">Create a new logo with DALL·E</button>
+    <label>
+      <input type="radio" name="logoChoice" value="upload" />
+      Upload a new file
+    </label><br />
+
+    <label>
+      <input type="radio" name="logoChoice" value="dalle" />
+      Create a new logo instantly with DALL·E
+    </label><br />
+
+    <label>
+      <input type="radio" name="logoChoice" value="later" />
+      I'll find or update my logo later
+    </label>
+  </div>
+
+  <!-- Container for upload UI (hidden by default) -->
+  <div id="uploadContainer" class="hidden">
+    <h3>Upload Your New Logo</h3>
+    <input type="file" id="logoUpload" accept="image/*" />
+  </div>
+
+  <!-- Container for DALL-E generation UI (hidden by default) -->
+  <div id="dalleContainer" class="hidden">
+    <h3>Generate a New Logo with DALL·E</h3>
+    <p>Enter instructions for your new logo (e.g., “blue and gold pipes”):</p>
+    <textarea id="dallePrompt" rows="3" placeholder="Describe your logo idea"></textarea>
+
+    <p>Choose up to two colors (optional):</p>
+    <input type="text" id="colorInput" placeholder="e.g. Blue, Gold" />
+
+    <button id="createLogoBtn">Create Logo</button>
+
+    <!-- Show the generated image (hidden until we have one) -->
+    <div id="dalleResult" class="hidden">
+      <h4>Generated Logo Preview</h4>
+      <img id="dalleImage" src="" alt="DALL-E Generated Logo" />
+      <br/>
+      <button id="acceptLogoBtn">Use This Logo</button>
+      <button id="tryAgainBtn">Try Again</button>
     </div>
+  </div>
+
+  <!-- Next Step button (hidden until a choice is complete) -->
+  <button id="goToStep2Btn" class="hidden">Go to Step 2: Hero Builder</button>
+
+  <!-- Step 2 placeholder (hidden) -->
+  <div id="step2Hero" class="hidden">
+    <h2>Step 2: Hero Builder</h2>
+    <p>(Placeholder for now...) Here you'd build out your hero images, text, etc.</p>
   </div>
 
   <script src="script.js"></script>
