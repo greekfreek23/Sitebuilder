@@ -2,14 +2,46 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AL Plumbers Site</title>
+  <title>Plumber Site Builder</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Welcome to AL Plumbers Site</h1>
-  <p id="statusMsg"></p>
-  <h2 id="plumberName"></h2>
-  <img id="plumberLogo" src="" alt="Plumber Logo" />
+
+  <!-- Title / Welcome -->
+  <h1>Welcome to Your Personalized Plumber Site</h1>
+  <p id="siteStatus"></p>
+
+  <!-- Original Site Preview Section -->
+  <div id="originalSiteContainer">
+    <p>Below is your current live site. If everything looks good, click the button to start editing.</p>
+    <iframe id="originalSiteIframe" src="" frameborder="0"></iframe>
+    
+    <button id="openBuilderBtn" class="big-button">
+      Open Website Builder
+    </button>
+  </div>
+
+  <!-- Builder Section (Initially Hidden) -->
+  <div id="builderContainer" class="hidden">
+    <h2>Part 1 of 5: Logo</h2>
+    <p id="logoInstructions">
+      We found the following logo in our records. Is this correct?
+    </p>
+    <div class="logo-display">
+      <img id="currentLogo" src="" alt="Current Logo" />
+    </div>
+    <div class="options">
+      <p>If this logo is incorrect or outdated, you can:</p>
+      
+      <!-- Option A: Upload a new file -->
+      <label for="logoUpload">Upload a new logo file:</label>
+      <input type="file" id="logoUpload" accept="image/*" />
+      <br/><br/>
+
+      <!-- Option B: Generate a new logo with DALL-E -->
+      <button id="generateLogoBtn">Create a new logo with DALL·E</button>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
