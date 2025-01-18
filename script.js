@@ -3,7 +3,7 @@
  * 2) Serve these files from a local or remote server 
  *    (cannot just open index.html from the file system).
  ***************************************************************/
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
+const OPENAI_API_KEY = "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";
 
 document.getElementById("generateBtn").addEventListener("click", () => {
   generateDalleImages("A cute baby sea otter", 3)
