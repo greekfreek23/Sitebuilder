@@ -304,6 +304,102 @@ textarea.form-input {
 
       h1 { font-size: 2rem; }
       h2 { font-size: 1.5rem; }
+      /* Add to your existing CSS */
+
+/* Services Layout */
+.services-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 1rem 0;
+}
+
+.services-list {
+  min-height: 200px;
+  border: 2px dashed var(--border-light);
+  border-radius: 8px;
+  padding: 1rem;
+  background: #f8fafc;
+}
+
+.sortable {
+  cursor: move;
+}
+
+.service-item {
+  background: white;
+  padding: 1rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.service-item:hover {
+  background: #f1f5f9;
+}
+
+.service-item.selected {
+  border-color: var(--primary-color);
+  background: #f0f9ff;
+}
+
+.service-item .drag-handle {
+  cursor: move;
+  color: #94a3b8;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Service Area Input */
+#serviceCounties {
+  min-height: 150px;
+}
+
+/* Instructions */
+.services-instructions {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .services-selector {
+    grid-template-columns: 1fr;
+  }
+  
+  .services-list {
+    min-height: 150px;
+  }
+}
     }
   </style>
 </head>
