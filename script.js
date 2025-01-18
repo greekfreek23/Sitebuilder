@@ -1,8 +1,3 @@
-/***************************************************************
- * REPLACE THE PLACEHOLDER API KEY BELOW WITH YOUR REAL KEY 
- ***************************************************************/
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
-
 (function(){
   // DOM references
   const statusMsg          = document.getElementById("statusMsg");
@@ -102,8 +97,7 @@ const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
         const primaryColor   = colorInputPrimary.value.trim() || "blue";
         const secondaryColor = colorInputSecondary.value.trim() || "white";
 
-        const prompt = `Create a plumbing-themed logo with symbol: ${chosenSymbol}, primary color: ${primaryColor}, secondary color: ${secondaryColor}. Return 3 small images.`;
-        generateDalleLogos(prompt, 3).then(urls => {
+        generateDalleLogos(chosenSymbol, primaryColor, secondaryColor, 3).then(urls => {
           urls.forEach(u => {
             const img = document.createElement("img");
             img.src = u;
@@ -130,8 +124,7 @@ const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
         if(!moreFeedback) return;
 
         logoAIImages.innerHTML = "";
-        const newPrompt = `Create 3 new plumbing-themed logos. Additional feedback: ${moreFeedback}.`;
-        generateDalleLogos(newPrompt, 3).then(urls => {
+        generateDalleLogos(symbolDropdown.value, colorInputPrimary.value.trim(), colorInputSecondary.value.trim(), 3, moreFeedback).then(urls => {
           urls.forEach(u => {
             const img = document.createElement("img");
             img.src = u;
@@ -240,11 +233,7 @@ const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
         const userFeedback = prompt("How should we improve this CTA? e.g. 'More friendly', 'Shorter', 'Add discount offer' etc.");
         if(!userFeedback) return;
 
-        // We'll use a quick prompt to get 3 CTA variants
-        const ctaPrompt = `Please write 3 short call-to-action lines for a plumbing hero image. 
-        They should incorporate the feedback: "${userFeedback}". Return them as a list.`;
-        
-        generateChatGPTCTA(ctaPrompt).then(variants => {
+        generateChatGPTCTA(userFeedback).then(variants => {
           if(variants.length < 1) {
             alert("No variants returned.");
             return;
@@ -267,8 +256,7 @@ const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
             // user wants to refine again
             const newFeedback = prompt("What else would you like to change?");
             if(!newFeedback) return;
-            const newPrompt = `Please write 3 short CTA lines for a plumbing hero image. Additional feedback: ${newFeedback}.`;
-            generateChatGPTCTA(newPrompt).then(newVars => {
+            generateChatGPTCTA(newFeedback).then(newVars => {
               if(newVars.length < 1) {
                 alert("No variants returned.");
                 return;
@@ -300,54 +288,71 @@ const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
   // ============ AI Helpers ============
 
   // DALL-E generation
-  async function generateDalleLogos(prompt, n=3) {
-    const response = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        prompt,
-        n,
-        size: "256x256"
-      })
-    });
-    if(!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || "DALL·E API error");
+  async function generateDalleLogos(symbol, primaryColor, secondaryColor, n=3, additionalFeedback="") {
+    try {
+      const responses = [];
+      // Make multiple calls since our endpoint returns one image at a time
+      for(let i = 0; i < n; i++) {
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            requestType: "logo",
+            symbol,
+            primaryColor,
+            secondaryColor,
+            additionalFeedback
+          })
+        });
+
+        if(!response.ok) {
+          const err = await response.json();
+          throw new Error(err.error || "API error");
+        }
+
+        const data = await response.json();
+        responses.push(data.imageUrl);
+      }
+      return responses;
+    } catch (error) {
+      console.error("Error generating logos:", error);
+      throw error;
     }
-    const data = await response.json();
-    return data.data.map(img => img.url);
   }
 
   // ChatGPT text completions
-  async function generateChatGPTCTA(userPrompt) {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          { role: "system", content: "You are a helpful marketing copywriter for a plumbing company." },
-          { role: "user", content: userPrompt }
-        ],
-        max_tokens: 100,
-        temperature: 0.7
-      })
-    });
-    if(!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || "ChatGPT API error");
+  async function generateChatGPTCTA(userFeedback) {
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          requestType: "heroText",
+          businessName: siteParam,
+          feedback: userFeedback
+        })
+      });
+
+      if(!response.ok) {
+        const err = await response.json();
+        throw new Error(err.error || "API error");
+      }
+
+      const data = await response.json();
+      // Split the response into lines
+      const lines = data.text.split(/\n+/).map(l => 
+        l.replace(/^\d+\.\s*/, "").trim()
+      ).filter(Boolean);
+      
+      return lines.slice(0,3);
+    } catch (error) {
+      console.error("Error generating CTA:", error);
+      throw error;
     }
-    const data = await response.json();
-    const rawText = data.choices[0].message.content.trim();
-    // We'll do a naive split
-    const lines = rawText.split(/\n+/).map(l => l.replace(/^\d+\.\s*/, "").trim()).filter(Boolean);
-    return lines.slice(0,3);
   }
 
 })();
