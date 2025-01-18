@@ -1,9 +1,9 @@
-import { Configuration, OpenAIApi } from 'openai';
+import { OpenAI } from 'openai';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+// Initialize OpenAI with API key from environment variable
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -14,36 +14,56 @@ export default async function handler(req, res) {
     const { requestType, ...params } = req.body;
     
     if (requestType === 'logo') {
-      const { symbol, primaryColor, secondaryColor } = params;
-      const prompt = `Create a professional plumbing logo incorporating a ${symbol} using ${primaryColor} as the primary color${secondaryColor ? ` and ${secondaryColor} as an accent` : ''}. Make it simple, modern, and suitable for a plumbing business website.`;
+      const { symbol, primaryColor, secondaryColor, additionalFeedback = '' } = params;
       
-      const response = await openai.createImage({
-        prompt: prompt,
+      let prompt = `Create a professional plumbing logo incorporating a ${symbol} using ${primaryColor} as the primary color`;
+      if (secondaryColor) {
+        prompt += ` and ${secondaryColor} as an accent`;
+      }
+      prompt += `. Make it simple, modern, and suitable for a plumbing business website.`;
+      if (additionalFeedback) {
+        prompt += ` Additional requirements: ${additionalFeedback}`;
+      }
+      
+      const response = await openai.images.generate({
+        prompt,
         n: 1,
         size: "1024x1024",
+        model: "dall-e-3"
       });
       
-      return res.status(200).json({ imageUrl: response.data.data[0].url });
+      return res.status(200).json({ imageUrl: response.data[0].url });
     }
     
-    else if (requestType === 'heroText') {
-      const { businessName } = params;
-      const completion = await openai.createChatCompletion({
-        model: "gpt-4.0-turbo",
-        messages: [{
-          role: "system",
-          content: "You are a professional copywriter creating compelling website hero text."
-        }, {
-          role: "user",
-          content: `Create a short, engaging hero text for a plumbing business named ${businessName}. Include a clear call-to-action.`
-        }]
+    if (requestType === 'heroText') {
+      const { businessName, feedback = '' } = params;
+      
+      let promptContent = `Create three short, engaging hero text options for a plumbing business named "${businessName}". Each should be compelling and include a clear call-to-action.`;
+      if (feedback) {
+        promptContent += ` Additional requirements: ${feedback}`;
+      }
+      
+      const completion = await openai.chat.completions.create({
+        messages: [
+          {
+            role: "system",
+            content: "You are a professional copywriter specializing in plumbing business websites. Create engaging, action-oriented text that builds trust and encourages contact."
+          },
+          {
+            role: "user",
+            content: promptContent
+          }
+        ],
+        model: "gpt-3.5-turbo",
+        temperature: 0.7,
+        max_tokens: 200
       });
       
-      return res.status(200).json({ text: completion.data.choices[0].message.content });
+      return res.status(200).json({ text: completion.choices[0].message.content });
     }
     
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to process request' });
+    res.status(500).json({ error: error.message || 'Failed to process request' });
   }
 }
