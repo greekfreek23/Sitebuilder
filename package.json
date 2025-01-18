@@ -1,0 +1,8 @@
+{
+  "name": "sitebuilder",
+  "version": "1.0.0",
+  "description": "Plumber site builder with OpenAI integration",
+  "dependencies": {
+    "openai": "^4.24.1"
+  }
+}
