@@ -6,70 +6,183 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
-    :root {
-      /* These will be overwritten by JavaScript with colors from JSON */
-      --primary-color: #2b6cb0;
-      --secondary-color: #38a169;
-      --text-color: #1a1a1a;
-      --background: #f5f7f9;
-      --border-light: #e2e8f0;
-    }
+    /* Variables for dynamic colors */
+:root {
+  --primary-color: #2b6cb0;
+  --secondary-color: #38a169;
+  --text-color: #1a1a1a;
+  --background: #f5f7f9;
+  --border-light: #e2e8f0;
+}
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      font-size: 16px;
-      line-height: 1.6;
-      color: var(--text-color);
-      background: var(--background);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2rem;
-    }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-color);
+  background: var(--background);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
 
-    .hidden {
-      display: none !important;
-    }
+.hidden {
+  display: none !important;
+}
 
-    .step-container {
-      background: white;
-      border-radius: 12px;
-      padding: 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border: 1px solid var(--border-light);
-      max-width: 900px;
-      width: 100%;
-    }
+/* Container styles */
+.step-container {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-light);
+  max-width: 1200px;
+  width: 100%;
+}
 
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 2rem;
-      color: var(--primary-color);
-    }
+/* Typography */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--primary-color);
+}
 
-    h2 {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: var(--text-color);
-    }
+h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
 
-    h3 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
+/* Hero Grid Layout */
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
 
+.hero-item {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.form-input, 
+.hero-item input {
+  margin: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  width: calc(100% - 2rem);
+}
+
+/* Button Styles */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.nav-button,
+.ai-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  color: white;
+  min-width: 100px;
+}
+
+.nav-button {
+  background: var(--primary-color);
+}
+
+.nav-button:hover {
+  filter: brightness(90%);
+  transform: translateY(-1px);
+}
+
+.ai-button {
+  background: var(--secondary-color);
+}
+
+.ai-button:hover {
+  filter: brightness(90%);
+  transform: translateY(-1px);
+}
+
+/* Form Elements */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+textarea.form-input {
+  min-height: 150px;
+  resize: vertical;
+}
+
+/* Status Message */
+.status-message {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid var(--border-light);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+
+  .step-container {
+    padding: 1rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+}
     .form-group {
       margin-bottom: 2rem;
     }
