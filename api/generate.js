@@ -53,7 +53,7 @@ export default async function handler(req, res) {
             content: promptContent
           }
         ],
-        model: "gpt-3.5-turbo",
+        model: "gpt-4.0-turbo",
         temperature: 0.7,
         max_tokens: 200
       });
