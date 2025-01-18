@@ -2,53 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Plumber Site Builder - Step 1: Logo</title>
+  <title>Plumber Site Builder</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1 id="stepTitle">Part 1 of 5: Logo</h1>
+  <h1 id="pageTitle">Plumber Site Builder</h1>
   <p id="statusMsg">Loading data...</p>
 
+  <!-- STEP 1: LOGO -->
   <div id="step1Logo" class="hidden">
+    <h2>Part 1 of 5: Logo</h2>
     <p id="instructions">
       We found the following logo in our records. Is this correct?
     </p>
 
-    <!-- Display the current logo -->
     <div class="logo-display">
       <img id="currentLogo" src="" alt="Current Logo" />
     </div>
 
-    <!-- Radio button options -->
     <div id="logoOptions">
       <label>
         <input type="radio" name="logoChoice" value="correct" />
         Yes, this is correct
       </label><br />
-
       <label>
         <input type="radio" name="logoChoice" value="upload" />
         Upload a new file
       </label><br />
-
       <label>
         <input type="radio" name="logoChoice" value="dalle" />
         Create a new logo instantly with DALL·E
       </label><br />
-
       <label>
         <input type="radio" name="logoChoice" value="later" />
         I'll find or update my logo later
       </label>
     </div>
 
-    <!-- Container for upload UI (hidden by default) -->
     <div id="uploadContainer" class="hidden">
       <h3>Upload Your New Logo</h3>
       <input type="file" id="logoUpload" accept="image/*" />
     </div>
 
-    <!-- Container for DALL-E generation UI (hidden by default) -->
     <div id="dalleContainer" class="hidden">
       <h3>Generate a New Logo with DALL·E (Demo)</h3>
       <p>Enter instructions for your new logo (e.g., “blue and gold pipes”):</p>
@@ -59,36 +54,40 @@
 
       <button id="createLogoBtn">Create Logo</button>
 
-      <!-- Show the generated image (hidden until we have one) -->
       <div id="dalleResult" class="hidden">
         <h4>Generated Logo Preview</h4>
         <img id="dalleImage" src="" alt="DALL-E Generated Logo" />
-        <br/>
+        <br />
         <button id="acceptLogoBtn">Use This Logo</button>
         <button id="tryAgainBtn">Try Again</button>
       </div>
     </div>
 
-    <!-- Next Step button (hidden until a choice is complete) -->
+    <!-- Button to proceed to Step 2 -->
     <button id="goToStep2Btn" class="hidden">Go to Step 2: Hero Builder</button>
   </div>
-<!-- Step 2: Hero Builder (initially hidden) -->
-<div id="step2Hero" class="hidden">
-  <h2>Step 2: Hero Builder</h2>
-  <p>Below are your current hero images and their call-to-action text.</p>
-  
-  <div id="heroImagesList"></div>
-  
-  <!-- Button to skip or confirm hero images and go to Step 3 -->
-  <button id="heroLooksGoodBtn">Looks Good! Go to Step 3</button>
-</div>
 
-<!-- Step 3: About Us (initially hidden) -->
-<div id="step3About" class="hidden">
-  <h2>Step 3: About Us</h2>
-  <p>Here we'll eventually let you edit your “About Us” text and images.</p>
-  <!-- Minimal placeholder. You can expand with textareas, file uploads, etc. -->
-</div>
+  <!-- STEP 2: HERO BUILDER -->
+  <div id="step2Hero" class="hidden">
+    <h2>Step 2: Hero Builder</h2>
+    <p>Below are your current hero images and their call-to-action text.</p>
+    
+    <div id="heroImagesList"></div>
+    
+    <button id="heroLooksGoodBtn">Looks Good! Go to Step 3</button>
+  </div>
+
+  <!-- STEP 3: ABOUT US (placeholder) -->
+  <div id="step3About" class="hidden">
+    <h2>Step 3: About Us</h2>
+    <p>(Placeholder) Here you'd let them edit their About Us text and images.</p>
+    <!-- Add textareas, file uploads, etc. in the future. -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
 
 
 
