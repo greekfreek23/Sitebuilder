@@ -285,7 +285,7 @@
     });
   }
 
-  // ============ AI Helpers ============
+ // ============ AI Helpers ============
 
   // DALL-E generation
   async function generateDalleLogos(symbol, primaryColor, secondaryColor, n=3, additionalFeedback="") {
@@ -354,5 +354,3 @@
       throw error;
     }
   }
-
-})();
