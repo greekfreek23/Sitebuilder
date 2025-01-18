@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Plumber Site Builder</title>
-  <!-- Link to external CSS file -->
+  <!-- Link to the external CSS file -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -14,7 +14,13 @@
   <div id="step1Logo" class="step-container hidden">
     <h2>Part 1 of 5: Logo</h2>
     <div class="logo-display">
-      <img id="currentLogo" src="" alt="Current Logo">
+      <!-- Keep the inline style from the original code -->
+      <img
+        id="currentLogo"
+        src=""
+        alt="Current Logo"
+        style="max-width: 200px; border: 1px solid #ccc; background: #fff; padding: 5px;"
+      >
     </div>
 
     <p>Select how you want to handle your logo:</p>
@@ -38,7 +44,11 @@
     </div>
 
     <!-- Symbol dropdown and color pickers for AI creation -->
-    <div id="dalleLogoContainer" class="hidden">
+    <div
+      id="dalleLogoContainer"
+      class="hidden"
+      style="margin:10px 0; border:1px solid #ddd; padding:10px; border-radius:4px;"
+    >
       <h3>Generate a New Logo with AI</h3>
       <label for="symbolDropdown">Select a Symbol:</label>
       <select id="symbolDropdown">
@@ -56,28 +66,28 @@
       </select>
 
       <label for="colorInputPrimary">Primary Color (hex or name):</label>
-      <input type="text" id="colorInputPrimary" placeholder="#0000ff or 'blue'"/>
+      <input type="text" id="colorInputPrimary" placeholder="#0000ff or 'blue'" />
 
       <label for="colorInputSecondary">Secondary Color (optional):</label>
-      <input type="text" id="colorInputSecondary" placeholder="#ff0000 or 'red'"/>
+      <input type="text" id="colorInputSecondary" placeholder="#ff0000 or 'red'" />
 
-      <button id="createLogoAI" class="btn ai-button">Generate Logo</button>
+      <button id="createLogoAI" class="ai-button">Generate Logo</button>
 
-      <div id="logoAIResults" class="hidden">
+      <div id="logoAIResults" class="hidden" style="margin-top:10px;">
         <h4>AI Generated Logos</h4>
-        <div id="logoAIImages"></div>
-        <button id="noneWorkBtn" class="btn ai-button">None of These Work</button>
-        <button id="tryLogoAgainBtn" class="btn ai-button">Try Again</button>
+        <div id="logoAIImages" style="display:flex; gap:10px;"></div>
+        <button id="noneWorkBtn" class="ai-button">None of These Work</button>
+        <button id="tryLogoAgainBtn" class="ai-button">Try Again</button>
       </div>
     </div>
 
     <!-- Upload container -->
-    <div id="uploadContainer" class="hidden">
+    <div id="uploadContainer" class="hidden" style="margin:10px 0;">
       <h3>Upload Your New Logo</h3>
       <input type="file" id="logoUpload" accept="image/*" />
     </div>
 
-    <button id="goToStep2Btn" class="btn nav-button hidden">
+    <button id="goToStep2Btn" class="nav-button hidden">
       Go to Step 2: Hero Builder
     </button>
   </div>
@@ -85,12 +95,9 @@
   <!-- STEP 2: HERO BUILDER -->
   <div id="step2Hero" class="step-container hidden">
     <h2>Step 2: Hero Builder</h2>
-    <p>
-      You can swap the hero image, write your own call-to-action text, 
-      or let AI generate new text.
-    </p>
+    <p>You can swap the hero image, write your own call-to-action text, or let AI generate new text.</p>
     <div id="heroImagesList"></div>
-    <button id="heroLooksGoodBtn" class="btn nav-button">
+    <button id="heroLooksGoodBtn" class="nav-button">
       Looks Good! Go to Step 3
     </button>
   </div>
@@ -104,7 +111,6 @@
   <script src="script.js"></script>
 </body>
 </html>
-
 
 
 
