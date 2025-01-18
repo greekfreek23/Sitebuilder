@@ -1,7 +1,7 @@
 /***************************************************************
  * REPLACE THE PLACEHOLDER API KEY BELOW WITH YOUR REAL KEY 
  ***************************************************************/
-const OPENAI_API_KEY = "YOUR_OPENAI_API_KEY_HERE";
+const OPENAI_API_KEY = ""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";
 
 (function(){
   // DOM references
