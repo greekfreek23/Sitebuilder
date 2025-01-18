@@ -16,9 +16,13 @@
   const tryAgainBtn      = document.getElementById("tryAgainBtn");
   const goToStep2Btn     = document.getElementById("goToStep2Btn");
 
-  const step2Hero        = document.getElementById("step2Hero");
+  const step2Hero             = document.getElementById("step2Hero");
+  const heroImagesList        = document.getElementById("heroImagesList");
+  const heroLooksGoodBtn      = document.getElementById("heroLooksGoodBtn");
 
-  // Grab ?site= from the URL
+  const step3About            = document.getElementById("step3About");
+
+  // 1) Grab ?site= from the URL
   const urlParams = new URLSearchParams(window.location.search);
   const siteParam = urlParams.get("site");
 
@@ -27,19 +31,18 @@
     return;
   }
 
-  // We'll fetch the real data from your 'alabamaplumbersnowebsite' JSON
+  // 2) Fetch data from your finalWebsiteData.json
   const DATA_URL = "https://raw.githubusercontent.com/greekfreek23/alabamaplumbersnowebsite/main/finalWebsiteData.json";
-
   fetch(DATA_URL)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Failed to fetch finalWebsiteData.json: " + response.status);
+    .then(resp => {
+      if (!resp.ok) {
+        throw new Error("Failed to fetch finalWebsiteData.json: " + resp.status);
       }
-      return response.json();
+      return resp.json();
     })
     .then(json => {
       const businesses = json.finalWebsiteData || [];
-      // Find the matching record
+      // Find matching record
       const found = businesses.find(biz =>
         (biz.siteId || "").toLowerCase() === siteParam.toLowerCase()
       );
@@ -49,30 +52,27 @@
         return;
       }
 
-      // If we get here, we have the business data
+      // We have data for the plumber
       statusMsg.textContent = `Loaded data for: ${siteParam}`;
-      step1Logo.classList.remove("hidden"); // Show the step 1 container
+      step1Logo.classList.remove("hidden"); // Show Step 1 container
 
-      // Display the plumber's existing logo
+      // Display the existing logo
       if (found.logo) {
         currentLogoImg.src = found.logo;
       } else {
         currentLogoImg.alt = "No logo found in data.";
       }
 
-      // Now set up the rest of the logic
-
-      // Radio change
+      // --- LOGO STEP 1 EVENTS ---
       logoOptions.addEventListener("change", e => {
         const choice = e.target.value;
-        // Hide sub-containers each time
         uploadContainer.classList.add("hidden");
         dalleContainer.classList.add("hidden");
         dalleResult.classList.add("hidden");
 
         switch (choice) {
           case "correct":
-            showNextStepButton(); // Immediately show the Step 2 button
+            showNextStepButton();
             break;
           case "upload":
             uploadContainer.classList.remove("hidden");
@@ -86,14 +86,14 @@
         }
       });
 
-      // File Upload logic
+      // Upload file logic
       logoUploadInput.addEventListener("change", e => {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
         reader.onload = evt => {
           currentLogoImg.src = evt.target.result; // local preview
-          console.log("New logo file chosen:", file.name);
+          // In real code, you'd store or upload it
           showNextStepButton();
         };
         reader.readAsDataURL(file);
@@ -101,40 +101,44 @@
 
       // DALL-E creation
       createLogoBtn.addEventListener("click", () => {
-        const userPrompt = dallePromptInput.value.trim();
+        const promptText = dallePromptInput.value.trim();
         const colors     = colorInput.value.trim();
-
-        if (!userPrompt) {
+        if (!promptText) {
           alert("Please enter a description for your logo.");
           return;
         }
-
-        // Fake a DALL-E call
-        simulateDalleGeneration(userPrompt, colors)
-          .then(imgUrl => {
-            dalleImage.src = imgUrl;
-            dalleResult.classList.remove("hidden");
-          });
+        simulateDalleGeneration(promptText, colors).then(imgUrl => {
+          dalleImage.src = imgUrl;
+          dalleResult.classList.remove("hidden");
+        });
       });
 
       acceptLogoBtn.addEventListener("click", () => {
-        // Set the main logo to the generated DALL-E image
         currentLogoImg.src = dalleImage.src;
-        console.log("User accepted DALL-E logo");
         showNextStepButton();
       });
 
       tryAgainBtn.addEventListener("click", () => {
-        // Hide result so user can re-enter text
         dalleResult.classList.add("hidden");
       });
 
-      // Next Step -> show Hero placeholder
       goToStep2Btn.addEventListener("click", () => {
+        // Hide Step 1, Show Step 2
         step1Logo.classList.add("hidden");
         goToStep2Btn.classList.add("hidden");
         step2Hero.classList.remove("hidden");
         statusMsg.textContent = "Now editing Step 2 (Hero)...";
+
+        // Load hero section
+        loadHeroSection(found);
+      });
+
+      // --- HERO STEP 2 EVENTS ---
+      heroLooksGoodBtn.addEventListener("click", () => {
+        // Hide Step 2, show Step 3
+        step2Hero.classList.add("hidden");
+        step3About.classList.remove("hidden");
+        statusMsg.textContent = "Now editing Step 3 (About Us)...";
       });
 
     })
@@ -143,17 +147,65 @@
       console.error(err);
     });
 
-  // Reveal the "Next Step" button
+  // Show "Go to Step 2" button
   function showNextStepButton() {
     goToStep2Btn.classList.remove("hidden");
   }
 
-  // Simulated DALL·E image generation
+  // Load the hero images into Step 2
+  function loadHeroSection(plumberData) {
+    if (!plumberData.photos || !plumberData.photos.heroImages) {
+      console.log("No hero images found in the data.");
+      heroImagesList.innerHTML = "<p>No hero images found.</p>";
+      return;
+    }
+    const heroImages = plumberData.photos.heroImages;
+    heroImagesList.innerHTML = "";
+
+    heroImages.forEach((heroObj, index) => {
+      const itemDiv = document.createElement("div");
+      itemDiv.classList.add("hero-item");
+
+      // Show the image
+      const imgEl = document.createElement("img");
+      imgEl.src = heroObj.imageUrl || "";
+      itemDiv.appendChild(imgEl);
+
+      // CTA label & input
+      const ctaLabel = document.createElement("label");
+      ctaLabel.textContent = "Call-to-Action Text:";
+      itemDiv.appendChild(ctaLabel);
+
+      const ctaInput = document.createElement("input");
+      ctaInput.type = "text";
+      ctaInput.value = heroObj.callToAction || "";
+      ctaInput.addEventListener("input", () => {
+        heroObj.callToAction = ctaInput.value;
+      });
+      itemDiv.appendChild(ctaInput);
+
+      // Swap image button
+      const swapBtn = document.createElement("button");
+      swapBtn.textContent = "Swap Image";
+      swapBtn.style.display = "block";
+      swapBtn.style.marginTop = "8px";
+      swapBtn.addEventListener("click", () => {
+        const newUrl = prompt("Enter new image URL:");
+        if (newUrl) {
+          imgEl.src = newUrl;
+          heroObj.imageUrl = newUrl;
+        }
+      });
+      itemDiv.appendChild(swapBtn);
+
+      heroImagesList.appendChild(itemDiv);
+    });
+  }
+
+  // Fake DALL-E generation (demo only)
   async function simulateDalleGeneration(prompt, colors) {
-    console.log("Simulating a DALL-E request with prompt:", prompt, "colors:", colors);
-    // Wait 1 second to mimic API call
-    await new Promise(res => setTimeout(res, 1000));
-    // Return a random placeholder
+    console.log("Simulating DALL-E with prompt:", prompt, "colors:", colors);
+    await new Promise(r => setTimeout(r, 1000)); // wait 1s
     const randomNum = Math.floor(Math.random() * 9999);
     return `https://via.placeholder.com/200x80?text=${encodeURIComponent(prompt)}+${randomNum}`;
   }
