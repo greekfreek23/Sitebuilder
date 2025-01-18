@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     else if (requestType === 'heroText') {
       const { businessName } = params;
       const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4.0-turbo",
         messages: [{
           role: "system",
           content: "You are a professional copywriter creating compelling website hero text."
