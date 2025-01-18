@@ -1,4 +1,10 @@
-/* Base styles */
+/* Reset and Base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 2rem;
@@ -43,7 +49,7 @@ h3 {
 }
 
 /* Status message */
-#statusMsg {
+.status-message {
   font-size: 1.125rem;
   color: #2d3748;
   margin-bottom: 2rem;
@@ -53,8 +59,118 @@ h3 {
   border: 1px solid #bee3f8;
 }
 
-/* Hero Images Grid */
-#heroImagesList {
+/* Form Elements */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.form-input,
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+/* Radio Options */
+.logo-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.radio-label {
+  padding: 1rem;
+  border-radius: 6px;
+  background: #f7fafc;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.radio-label:hover {
+  background: #edf2f7;
+}
+
+/* Logo Display */
+.logo-display {
+  margin: 2rem 0;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e0;
+  text-align: center;
+}
+
+#currentLogo {
+  max-width: 200px;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Button Styles */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.nav-button,
+.ai-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  color: white;
+}
+
+.nav-button {
+  background: #3182ce;
+  box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
+}
+
+.nav-button:hover {
+  background: #2c5282;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(49, 130, 206, 0.25);
+}
+
+.ai-button {
+  background: #38a169;
+  box-shadow: 0 2px 4px rgba(56, 161, 105, 0.2);
+}
+
+.ai-button:hover {
+  background: #2f855a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(56, 161, 105, 0.25);
+}
+
+/* Hero Grid */
+.hero-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
@@ -85,124 +201,56 @@ h3 {
   margin-bottom: 1rem;
 }
 
-/* Form Elements */
-input[type="text"], 
-select {
+/* File Input */
+.file-input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input[type="text"]:focus,
-select:focus {
-  outline: none;
-  border-color: #4299e1;
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
-}
-
-/* Button Styles */
-button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-}
-
-.nav-button {
-  background: #3182ce;
-  color: white;
-  box-shadow: 0 2px 4px rgba(49, 130, 206, 0.2);
-}
-
-.nav-button:hover {
-  background: #2c5282;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(49, 130, 206, 0.25);
-}
-
-.ai-button {
-  background: #38a169;
-  color: white;
-  box-shadow: 0 2px 4px rgba(56, 161, 105, 0.2);
-}
-
-.ai-button:hover {
-  background: #2f855a;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 6px rgba(56, 161, 105, 0.25);
-}
-
-/* Call to Action Input */
-.hero-item input[type="text"] {
-  font-size: 0.875rem;
-  padding: 0.625rem;
-  background: #f7fafc;
-}
-
-/* Radio Options */
-#logoOptions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin: 1.5rem 0;
-}
-
-#logoOptions label {
   padding: 1rem;
-  border-radius: 6px;
   background: #f7fafc;
+  border-radius: 6px;
+  border: 2px dashed #cbd5e0;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-#logoOptions label:hover {
-  background: #edf2f7;
-}
-
-/* Current Logo Display */
-.logo-display {
-  margin: 2rem 0;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  border: 1px dashed #cbd5e0;
-  text-align: center;
-}
-
-#currentLogo {
-  max-width: 200px;
-  height: auto;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Utility Classes */
 .hidden {
-  display: none;
+  display: none !important;
+}
+
+/* Logo AI Results */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.logo-grid img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.logo-grid img:hover {
+  transform: scale(1.05);
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  #heroImagesList {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
   body {
     padding: 1rem;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
   }
   
   .step-container {
     padding: 1.5rem;
   }
+  
+  .button-group {
+    flex-direction: column;
+  }
 }
-
