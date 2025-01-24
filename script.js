@@ -34,7 +34,7 @@
 
   // Get URL parameter
   const urlParams = new URLSearchParams(window.location.search);
-  const siteParam = urlParams.get("site");
+  const siteParam = urlParams.get("site"); // 'site' is treated as 'placeId'
 
   if(!siteParam) {
     statusMsg.textContent = "Error: No ?site= parameter found in the URL.";
@@ -190,7 +190,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           requestType: 'heroText',
-          businessName: siteParam
+          businessName: siteParam // Using 'siteParam' as 'placeId'
         })
       });
 
@@ -219,7 +219,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           requestType: 'whyChooseUs',
-          businessName: siteParam
+          businessName: siteParam // Using 'siteParam' as 'placeId'
         })
       });
 
@@ -248,7 +248,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           requestType: 'sellingPoints',
-          businessName: siteParam
+          businessName: siteParam // Using 'siteParam' as 'placeId'
         })
       });
 
@@ -316,8 +316,10 @@
     .then(resp => resp.json())
     .then(json => {
       const businesses = json.finalWebsiteData || [];
+      
+      // Modify the matching logic to use 'placeId' instead of 'siteId'
       const found = businesses.find(biz => 
-        (biz.siteId || "").toLowerCase() === siteParam.toLowerCase()
+        (biz.placeId || "").toLowerCase() === siteParam.toLowerCase()
       );
       
       if (found) {
@@ -336,7 +338,7 @@
         initializeServicesSection(found);
         initializeServiceArea(found);
       } else {
-        statusMsg.textContent = `No matching siteId found for: ${siteParam}`;
+        statusMsg.textContent = `No matching placeId found for: ${siteParam}`;
       }
     })
     .catch(err => {
